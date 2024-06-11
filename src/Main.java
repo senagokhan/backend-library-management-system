@@ -31,4 +31,8 @@ public class Main {
         System.out.println("Book Page Number: " + pageNumber);
     }
    
+    //Total number of books
+    public static void countTotalBooks() {
+        System.out.println("Total number of books :" + bookQuantity);
+    }
 }
