@@ -26,12 +26,12 @@ public class Main {
                 System.out.println("Number of Pages = books[i][3]");
             }
 
-            else{
-                System.out.println("The book you are looking for is not registered in the system:");
 
-            }
+            else{}
 
         }
+                System.out.println("The book you are looking for is not registered in the system:");
+
     }
 
 
