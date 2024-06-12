@@ -39,7 +39,7 @@ public class Main {
     static void checkBooks(String bookId){  
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
-                if (books[i][0].equals(bookId)) {
+                if (books[i][2].equals(bookId)) {
                     System.out.println("The book is found!");
                     found = true;
                     break;}
