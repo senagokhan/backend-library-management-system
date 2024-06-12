@@ -35,7 +35,6 @@ public class Main {
     public static void countTotalBooks() {
         System.out.println("Total number of books :" + bookQuantity);
     }
-
     static void checkBooks(String bookId){  
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
@@ -47,4 +46,5 @@ public class Main {
             System.out.println("The book is not found.");
             }
     }
-}}
+}
+}
