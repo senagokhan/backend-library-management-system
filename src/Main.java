@@ -1,6 +1,6 @@
 public class Main {
     static int Index = 50;
-    static String[][] books = new String[Index][4];
+    static String[][] books = new String[Index][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4];
     static String[][] transactions = new String[Index][3];
     static int bookQuantity = 0;
@@ -10,6 +10,19 @@ public class Main {
 
     public static void main(String[] args) {
 
+    }
+
+    public static void addBook(String title, String author, String id, String additionalDoc){
+        if(bookQuantity < Index){
+            books[bookQuantity][0] = title;
+            books[bookQuantity][1] = author;
+            books[bookQuantity][2] = id;
+            books[bookQuantity][3] = additionalDoc;
+            bookQuantity++;
+            System.out.println("Kitap başarıyla eklendi");
+        }else {
+            System.out.println("raflar dolu kitap ekleyemiyoruz!");
+        }
     }
 
     public static void viewAvailableBooks() {
