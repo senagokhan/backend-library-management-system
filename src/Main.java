@@ -14,17 +14,6 @@ public class Main {
     public static void main(String[] args) {
 
     }
-
-
-    public static void getBookInfo(String title, String author, String id, String additionalDoc){
-        if(bookQuantity< Index){
-            users[bookQuantity][0] = title;
-            users[bookQuantity][1] = author;
-            users[bookQuantity][2] = id;
-            users[bookQuantity][3] = additionalDoc;
-        }
-    }
-        
     
     public static void addBook(String title, String author, String id, String additionalDoc){
         if(bookQuantity < Index){
@@ -63,7 +52,8 @@ public class Main {
         System.out.println("Total number of books :" + bookQuantity);
     }
 
-     public static void checkOutBook(String userId, String bookId){
+    
+    public static void checkOutBook(String userId, String bookId){
         if(checkBooks(bookId)){
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
