@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
     static int Index = 50;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
@@ -12,6 +15,17 @@ public class Main {
 
     }
 
+
+    public static void getBookInfo(String title, String author, String id, String additionalDoc){
+        if(bookQuantity< Index){
+            users[bookQuantity][0] = title;
+            users[bookQuantity][1] = author;
+            users[bookQuantity][2] = id;
+            users[bookQuantity][3] = additionalDoc;
+        }
+    }
+        
+    
     public static void addBook(String title, String author, String id, String additionalDoc){
         if(bookQuantity < Index){
             books[bookQuantity][0] = title;
@@ -48,7 +62,26 @@ public class Main {
     public static void countTotalBooks() {
         System.out.println("Total number of books :" + bookQuantity);
     }
-    static void checkBooks(String bookId){  
+
+     public static void checkOutBook(String userId, String bookId){
+        if(checkBooks(bookId)){
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = currentDate.format(dateFormatter);
+
+            transactions[transactionQuantity][0] = userId;
+            transactions[transactionQuantity][1] = bookId;
+            transactions[transactionQuantity][2] = formattedDate;
+            transactionQuantity++;
+
+            System.out.println("Transaction successful");
+        }
+        else {
+            System.out.println("Transaction failed");
+}}
+
+
+    public static boolean checkBooks(String bookId){  
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
                 if (books[i][2].equals(bookId)) {
@@ -57,7 +90,10 @@ public class Main {
                     break;}
         if (!found) {
             System.out.println("The book is not found.");
+            
             }
+            
     }
+    return found;
 }
 }
