@@ -19,9 +19,9 @@ public class Main {
             books[bookQuantity][2] = id;
             books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
-            System.out.println("Kitap başarıyla eklendi");
+            System.out.println("The book was added successfully");
         }else {
-            System.out.println("raflar dolu kitap ekleyemiyoruz!");
+            System.out.println("The shelves are full, we cannot add more books!");
         }
     }
 
