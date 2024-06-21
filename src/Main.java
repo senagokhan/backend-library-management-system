@@ -18,9 +18,11 @@ public class Main {
             books[bookQuantity][2] = bookId;
             books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
+
             System.out.println(bookQuantity + "." + " Book added successfully");
         }else {
             System.out.println("We cannot add books to shelves that are already full!");
+
         }
     }
 
