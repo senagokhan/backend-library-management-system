@@ -2,7 +2,7 @@ public class Main {
     static int Index = 50;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4];
-    static String[][] transactions = new String[Index][3]; // userId , bookId , date , status
+    static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
     static int bookQuantity = 0;
     static int transactionQuantity = 0;
     static int userQuantity = 0;
