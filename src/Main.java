@@ -12,19 +12,20 @@ public class Main {
 
 
     public static void main(String[] args) {
-
     }
-    
-    public static void addBook(String title, String author, String id, String additionalDoc){
+
+    public static void addBook(String title, String author, String bookId, String additionalDoc){
         if(bookQuantity < Index){
             books[bookQuantity][0] = title;
             books[bookQuantity][1] = author;
-            books[bookQuantity][2] = id;
+            books[bookQuantity][2] = bookId;
             books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
-            System.out.println("Kitap başarıyla eklendi");
+
+            System.out.println(bookQuantity + "." + " Book added successfully");
         }else {
-            System.out.println("raflar dolu kitap ekleyemiyoruz!");
+            System.out.println("We cannot add books to shelves that are already full!");
+
         }
     }
 
@@ -40,11 +41,11 @@ public class Main {
         }
     }
 
-    private static void printBooks(String title, String author, String bookId, String pageNumber) {
+    private static void printBooks(String title, String author, String bookId, String additionalDoc) {
         System.out.println("Book Title: " + title);
         System.out.println("Book Author: " + author);
         System.out.println("Book ID: " + bookId);
-        System.out.println("Book Page Number: " + pageNumber);
+        System.out.println("Book Additional Document: " + additionalDoc);
     }
    
     //Total number of books
@@ -80,9 +81,7 @@ public class Main {
                     break;}
         if (!found) {
             System.out.println("The book is not found.");
-            
             }
-            
     }
     return found;
 }
