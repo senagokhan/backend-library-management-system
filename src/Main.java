@@ -69,8 +69,25 @@ public class Main {
         }
         else {
             System.out.println("Transaction failed");
-}}
+    }
+        int indexToRemove = getBookIndexByBookId(bookId);
+        for (int i = indexToRemove; i < bookQuantity - 1; i++) {
+             books[i] = books[i + 1];
+    }
+        books[bookQuantity - 1] = null;
+        bookQuantity --;
 
+    }
+
+        public static int getBookIndexByBookId(String bookId) {
+        int indexOfBook = -1;
+        for (int i = 0; i < bookQuantity; i++) {
+        if (bookId.equals(books[i][2])) {
+        indexOfBook = i;
+        break;
+        }}
+        return indexOfBook;
+}
 
     public static boolean checkBooks(String bookId){  
         boolean found = false;
