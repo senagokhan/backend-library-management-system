@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
     }
 
+
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
             books[bookQuantity][0] = title;
@@ -20,6 +21,7 @@ public class Main {
             bookQuantity++;
 
             System.out.println(bookQuantity + "." + " Book added successfully");
+
         } else {
             System.out.println("We cannot add books to shelves that are already full!");
 
@@ -27,7 +29,6 @@ public class Main {
     }
 
     public static void viewAvailableBooks() {
-
         if (bookQuantity == 0) {
             System.out.println("There isn't available books!");
         } else {
@@ -80,5 +81,7 @@ public class Main {
         if (temp == -1) {
             System.out.println("The book is not found : ");
         }
+
     }
-}
+ 
+}}
