@@ -92,10 +92,10 @@ public class Main {
             String[][] booksNew = new String[bookQuantity][4];
             for (i = 0; i < bookQuantity; i++) {
                 for (j = 0; j < bookQuantity - 1; j++) {
-                    booksNew[j][0] = books[i][0];
-                    booksNew[j][1] = books[i][1];
-                    booksNew[j][2] = books[i][2];
-                    booksNew[j][3] = books[i][3];
+                    booksNew[j][0] = books[j][0];
+                    booksNew[j][1] = books[j][1];
+                    booksNew[j][2] = books[j][2];
+                    booksNew[j][3] = books[j][3];
                 }
                 booksNew[bookQuantity - 1][0] = title;
                 booksNew[bookQuantity - 1][1] = author;
