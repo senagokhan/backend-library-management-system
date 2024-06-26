@@ -83,5 +83,32 @@ public class Main {
         }
 
     }
+
+    public static void extendBooksArrayOnAddition(String title, String author, String bookId, String additionalDoc) {
+        int temp = -1, i, j;
+        if (Index <= bookQuantity) {
+            Index = Index + 1;
+            bookQuantity = bookQuantity + 1;
+            String[][] booksNew = new String[bookQuantity][4];
+            for (i = 0; i < bookQuantity; i++) {
+                for (j = 0; j < bookQuantity - 1; j++) {
+                    booksNew[j][0] = books[i][0];
+                    booksNew[j][1] = books[i][1];
+                    booksNew[j][2] = books[i][2];
+                    booksNew[j][3] = books[i][3];
+                }
+                booksNew[bookQuantity - 1][0] = title;
+                booksNew[bookQuantity - 1][1] = author;
+                booksNew[bookQuantity - 1][2] = bookId;
+                booksNew[bookQuantity - 1][3] = additionalDoc;
+
+                books = booksNew;
+                System.out.println("Extend Books and Array On Addition transaction successful");
+            }
+            if (temp == -1) {
+                System.out.println("Extend Books and Array On Addition transaction failed!");
+            }
+        }
+    }
  
-}}
+}
