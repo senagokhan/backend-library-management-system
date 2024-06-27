@@ -1,5 +1,5 @@
 public class Main {
-    static int Index = 50;
+    static int Index = 5;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4];
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
@@ -9,6 +9,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
     }
 
 
@@ -85,12 +86,9 @@ public class Main {
     }
 
     public static void deleteBook(String bookId) {
-        int temp = 0;
         if (bookQuantity > 0) {
             truncateBooksArrayOnDeletion(bookId);
-            temp = 1;
-        }
-        if (temp == 0) {
+        } else {
             System.out.println("There is no book that can be erased!");
         }
     }
@@ -123,5 +121,5 @@ public class Main {
         }
 
     }
- 
+
 }
