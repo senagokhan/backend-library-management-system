@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Main {
     static int Index = 50;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
@@ -9,8 +11,8 @@ public class Main {
 
 
     public static void main(String[] args) {
-    }
 
+    }
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -83,5 +85,38 @@ public class Main {
         }
 
     }
- 
-}}
+
+    public static void generateBookRecommendations(String userId) {
+
+        int i, j, x;
+        String userbookId = null;
+        String userbookAuthor = null;
+
+        for (i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(userId)) {
+                userbookId = transactions[i][1];
+            }
+        }
+
+        if (userbookId == null) {
+            Random veri = new Random();
+            x = veri.nextInt(bookQuantity - 1);
+            System.out.println(books[x][0]);
+            System.out.println(books[x][1]);
+
+        } else {
+            for (j = 0; j < bookQuantity; j++) {
+                if (books[j][2].equals(userbookId)) {
+                    userbookAuthor = books[j][1];
+                    System.out.println(books[j][1]);
+                    System.out.println(books[j][0]);
+                    System.out.println(books[j][1]);
+
+                }
+
+            }
+        }
+
+    }
+
+}
