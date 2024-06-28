@@ -54,8 +54,6 @@ public class Main {
         System.out.println("Total number of books :" + bookQuantity);
     }
 
-<<<<<<< HEAD
-    
     public static void checkOutBook(String userId, String bookId){
         if(checkBooks(bookId)){
             LocalDate currentDate = LocalDate.now();
@@ -105,7 +103,7 @@ public class Main {
     return found;
 }
 }
-=======
+
     static void checkBooks(String bookId) {
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
@@ -140,4 +138,3 @@ public class Main {
     }
  
 }}
->>>>>>> master
