@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
-    static int Index = 50;
+    static int Index = 5;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4];
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
@@ -12,6 +12,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
     }
 
 
@@ -136,5 +137,44 @@ public class Main {
         }
 
     }
- 
-}}
+
+
+    public static void deleteBook(String bookId) {
+        if (bookQuantity > 0) {
+            truncateBooksArrayOnDeletion(bookId);
+        } else {
+            System.out.println("There is no book that can be erased!");
+        }
+    }
+
+    public static void truncateBooksArrayOnDeletion(String bookId) {
+        int temp = -1, i, j;
+        for (i = 0; i < bookQuantity; i++) {
+            if (books[i][2].equals(bookId)) {
+                temp = i;
+                bookQuantity = bookQuantity - 1;
+                String[][] booksNew = new String[bookQuantity][4];
+                for (j = 0; j < temp; j++) {
+                    booksNew[j][0] = books[j][0];
+                    booksNew[j][1] = books[j][1];
+                    booksNew[j][2] = books[j][2];
+                    booksNew[j][3] = books[j][3];
+                }
+                for (j = temp; j < bookQuantity; j++) {
+                    booksNew[j][0] = books[j + 1][0];
+                    booksNew[j][1] = books[j + 1][1];
+                    booksNew[j][2] = books[j + 1][2];
+                    booksNew[j][3] = books[j + 1][3];
+                }
+                books = booksNew;
+                System.out.println("Truncate Books and Array On Deletion transaction successful");
+            }
+        }
+        if (temp == -1) {
+            System.out.println("Truncate Books and Array On Deletion transaction failed!");
+        }
+
+    }
+
+}
+
