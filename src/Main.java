@@ -1,5 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
 
 public class Main {
     static int Index = 5;
@@ -9,7 +11,7 @@ public class Main {
     static int bookQuantity = 0;
     static int transactionQuantity = 0;
     static int userQuantity = 0;
-
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
@@ -103,20 +105,27 @@ public class Main {
     }
     return found;
 }
-}
 
-    static void checkBooks(String bookId) {
-        boolean found = false;
-        for (int i = 0; i < bookQuantity; i++) {
-            if (books[i][2].equals(bookId)) {
-                System.out.println("The book is found!");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("The book is not found.");
-        }
+    public static void signUp(){
+    System.out.println("User Name :");
+    String userName = scanner.nextLine();
+
+    System.out.println("User ID :");
+    String userId = scanner.nextLine();
+
+    System.out.println("Email address :");
+    String email = scanner.nextLine();
+
+    System.out.println("Password :");
+    String password = scanner.nextLine();
+    
+    users[userQuantity][0] = userName;
+    users[userQuantity][1] = userId;
+    users[userQuantity][2] = email;
+    users[userQuantity][3] = password;
+    userQuantity++;
+
+    System.out.println("Signup Successful.");
     }
 
     public static void searchBook(String query) { // Search with title or Id
