@@ -88,7 +88,7 @@ public class Main {
 
     public static void generateBookRecommendations(String userId) {
 
-        int i, j, x;
+        int i, j, k, x, temp = 0;
         String userbookId = null;
         String userbookAuthor = null;
 
@@ -101,22 +101,34 @@ public class Main {
         if (userbookId == null) {
             Random veri = new Random();
             x = veri.nextInt(bookQuantity - 1);
-            System.out.println(books[x][0]);
-            System.out.println(books[x][1]);
+            System.out.println("Name of recommended book :" + books[x][0]);
+            System.out.println("Author of recommended book :" + books[x][1]);
 
         } else {
             for (j = 0; j < bookQuantity; j++) {
                 if (books[j][2].equals(userbookId)) {
                     userbookAuthor = books[j][1];
-                    System.out.println(books[j][1]);
-                    System.out.println(books[j][0]);
-                    System.out.println(books[j][1]);
-
+                }
+            }
+            for (k = 0; k < bookQuantity; k++) {
+                if (books[k][1].equals(userbookAuthor) && books[k][2] != (userbookId)) {
+                    System.out.println("Name of recommended book :" + books[k][0]);
+                    System.out.println("Author of recommended book :" + books[k][1]);
+                    temp=temp+1;
                 }
 
             }
+            if (temp == 0) {
+                Random veri = new Random();
+                x = veri.nextInt(bookQuantity - 1);
+                System.out.println("Name of recommended book :" + books[x][0]);
+                System.out.println("Author of recommended book :" + books[x][1]);
+            }
+
         }
 
+
     }
+
 
 }
