@@ -135,7 +135,23 @@ public class Main {
         if (temp == -1) {
             System.out.println("The book is not found : ");
         }
+    }
 
+    public static void updateBook(String title, String author, String bookId, String additionalDoc) {
+        int temp = -1, i;
+        for (i = 0; i < bookQuantity; i++) {
+            if (books[i][2].equals(bookId)) {
+                books[i][0] = title;
+                books[i][1] = author;
+                books[i][2] = bookId;
+                books[i][3] = additionalDoc;
+                System.out.println("Book update transaction successful");
+                temp = i;
+            }
+        }
+        if (temp == -1) {
+            System.out.println("Book update transaction failed!");
+        }
     }
 
 
