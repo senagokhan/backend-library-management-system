@@ -155,6 +155,20 @@ public class Main {
     }
 
 
+    public static void returnbook(String userId, String bookId) {
+        int temp = -1, i;
+        for (i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(userId) || transactions[i][1].equals(bookId)) {
+                transactions[i][3] = "RETURNED";
+                System.out.println("Book return transaction successful");
+                temp = i;
+            }
+        }
+        if (temp == -1) {
+            System.out.println("Book return transaction failed!");
+        }
+    }
+
     public static void deleteBook(String bookId) {
         if (bookQuantity > 0) {
             truncateBooksArrayOnDeletion(bookId);
