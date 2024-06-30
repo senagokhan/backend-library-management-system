@@ -18,8 +18,7 @@ public class Main {
 
         
     }
-
-    }
+    
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -130,6 +129,31 @@ public class Main {
         userQuantity++;
 
         System.out.println("Signup Successful.");
+    }
+
+    public static void updateUserInfo(String userName, String userId, String email, String password ){
+        int userIndex = getUserIndexById(userId);
+        if (userIndex >= 0) {
+            users[userIndex][0] = userName;
+            users[userIndex][1] = userId;
+            users[userIndex][2] = email;
+            users[userIndex][3] = password;
+
+            System.out.println("User information has been updated successfully.");}
+        else 
+        {
+            System.out.println("User not found!");
+        }}
+
+
+    public static int getUserIndexById(String userId){
+            int indexOfUser = -1;
+            for (int i = 0; i < userQuantity; i++) {
+            if (userId.equals(users[i][1])) {
+            indexOfUser = i;
+            break;
+            }}
+            return indexOfUser;
     }
 
     public static void searchBook(String query) { // Search with title or Id
@@ -295,7 +319,7 @@ public class Main {
     }
 
 
-}
+
 
 
     public static void viewBooksDetails(String bookId) {
