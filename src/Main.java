@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -14,9 +15,11 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+
         
     }
 
+    }
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -245,6 +248,56 @@ public class Main {
 
     }
 
+
+
+    public static void generateBookRecommendations(String userId) {
+
+        int i, j, k, x, temp = 0;
+        String userbookId = null;
+        String userbookAuthor = null;
+
+        for (i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(userId)) {
+                userbookId = transactions[i][1];
+            }
+        }
+
+        if (userbookId == null) {
+            Random veri = new Random();
+            x = veri.nextInt(bookQuantity - 1);
+            System.out.println("Name of recommended book :" + books[x][0]);
+            System.out.println("Author of recommended book :" + books[x][1]);
+
+        } else {
+            for (j = 0; j < bookQuantity; j++) {
+                if (books[j][2].equals(userbookId)) {
+                    userbookAuthor = books[j][1];
+                }
+            }
+            for (k = 0; k < bookQuantity; k++) {
+                if (books[k][1].equals(userbookAuthor) && books[k][2] != (userbookId)) {
+                    System.out.println("Name of recommended book :" + books[k][0]);
+                    System.out.println("Author of recommended book :" + books[k][1]);
+                    temp=temp+1;
+                }
+
+            }
+            if (temp == 0) {
+                Random veri = new Random();
+                x = veri.nextInt(bookQuantity - 1);
+                System.out.println("Name of recommended book :" + books[x][0]);
+                System.out.println("Author of recommended book :" + books[x][1]);
+            }
+
+        }
+
+
+    }
+
+
+}
+
+
     public static void viewBooksDetails(String bookId) {
 
         int i;
@@ -259,3 +312,4 @@ public class Main {
 
     }
 }
+
