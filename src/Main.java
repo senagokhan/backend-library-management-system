@@ -131,6 +131,31 @@ public class Main {
         System.out.println("Signup Successful.");
     }
 
+    public static int login(){
+        System.out.println("E-mail address:");
+        String email = scanner.nextLine();
+        System.out.println("Password:");
+        String password = scanner.nextLine();
+        int index = invalidLoginCheck(email, password);
+        if (index!=-1){
+            System.out.println("Login successful!");
+            return index;
+        }
+        return -1;
+    }
+
+
+public static int invalidLoginCheck(String email, String password) {
+        for (int i = 0; i < userQuantity; i++) {
+            if (users[i][2].equals(email) && users[i][3].equals(password)) {
+                System.out.println("Login successful!");
+                return i;
+            }
+        }
+        System.out.println("Invalid login! Please check your email or password!");
+        return -1;
+    }
+
     public static void updateUserInfo(String userName, String userId, String email, String password ){
         int userIndex = getUserIndexById(userId);
         if (userIndex >= 0) {
