@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
     static int Index = 5;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
-    static String[][] users = new String[Index][4];
+    static String[][] users = new String[Index][4]; // id , name , email, password
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
     static int bookQuantity = 0;
     static int transactionQuantity = 0;
@@ -18,7 +18,8 @@ public class Main {
 
         
     }
-    
+
+  
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -105,6 +106,11 @@ public class Main {
             if (!found) {
                 System.out.println("The book is not found.");
             }
+
+            }
+            if (!found) {
+                System.out.println("The book is not found.");
+            }
         }
         return found;
     }
@@ -112,6 +118,7 @@ public class Main {
     public static void signUp() {
         System.out.println("User Name :");
         String userName = scanner.nextLine();
+
 
         System.out.println("User ID :");
         String userId = scanner.nextLine();
@@ -129,6 +136,7 @@ public class Main {
         userQuantity++;
 
         System.out.println("Signup Successful.");
+
     }
 
     public static int login(){
@@ -177,8 +185,10 @@ public static int invalidLoginCheck(String email, String password) {
             if (userId.equals(users[i][1])) {
             indexOfUser = i;
             break;
-            }}
+            }
+            }
             return indexOfUser;
+
     }
 
     public static void searchBook(String query) { // Search with title or Id
@@ -244,7 +254,9 @@ public static int invalidLoginCheck(String email, String password) {
         }
     }
 
+
     public static void returnBook(String bookId) {
+ 
         int temp = -1, i;
         for (i = 0; i < transactionQuantity; i++) {
             if (transactions[i][1].equals(bookId)) {
@@ -297,6 +309,42 @@ public static int invalidLoginCheck(String email, String password) {
 
     }
 
+      
+    public static void deleteUserInfo(String userId, String bookId) {
+        if (transactionQuantity > 0) {
+            returnBook(bookId);
+            int temp = -1, i, j;
+            for (i = 0; i < userQuantity; i++) {
+                if (users[i][0].equals(userId)) {
+                    temp = i;
+                    userQuantity = userQuantity - 1;
+                    String[][] usersNew = new String[userQuantity][4];
+                    for (j = 0; j < temp; j++) {
+                        usersNew[j][0] = users[j][0];
+                        usersNew[j][1] = users[j][1];
+                        usersNew[j][2] = users[j][2];
+                        usersNew[j][3] = users[j][3];
+                    }
+
+                    for (j = temp; j < userQuantity; j++) {
+                        usersNew[j][0] = users[j + 1][0];
+                        usersNew[j][1] = users[j + 1][1];
+                        usersNew[j][2] = users[j + 1][2];
+                        usersNew[j][3] = users[j + 1][3];
+                    }
+                    users = usersNew;
+                    System.out.println("Truncate User and Array On Deletion transaction successful");
+                }
+            }
+            if (temp == -1) {
+                System.out.println("Truncate User and Array On Deletion transaction failed!");
+            }
+        } else {
+            System.out.println("There is no user that can be erased!");
+        }
+
+    }
+}
 
 
     public static void generateBookRecommendations(String userId) {
@@ -344,10 +392,7 @@ public static int invalidLoginCheck(String email, String password) {
     }
 
 
-
-
-
-    public static void viewBooksDetails(String bookId) {
+ public static void viewBooksDetails(String bookId) {
 
         int i;
         for (i = 0; i < bookQuantity; i++) {
@@ -361,4 +406,3 @@ public static int invalidLoginCheck(String email, String password) {
 
     }
 }
-
