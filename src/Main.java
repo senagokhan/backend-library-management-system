@@ -18,21 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        requestBook("kediler", "lokum", "12", "miyaav");
-
-        requestBook("kediler2", "lokum", "13", "miyaav");
-
-        for(int i=0; i<requestBookQuantity; i++){
-            System.out.println(requestBooks[i][0]);
-            System.out.println(requestBooks[i][1]);
-            System.out.println(requestBooks[i][2]);
-            System.out.println(requestBooks[i][3]);
-        }
-        requestBook("kediler3", "lokum", "14", "miyaav");
-
-
     }
-
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -431,6 +417,7 @@ public class Main {
 
         }
 
-
     }
+
+
 }
