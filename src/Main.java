@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     static int Index = 5;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
-    static String[][] users = new String[Index][4];
+    static String[][] users = new String[Index][4]; // id , name , email, password
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
     static int bookQuantity = 0;
     static int transactionQuantity = 0;
@@ -16,7 +16,6 @@ public class Main {
     public static void main(String[] args) {
 
     }
-
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -57,8 +56,8 @@ public class Main {
         System.out.println("Total number of books :" + bookQuantity);
     }
 
-    public static void checkOutBook(String userId, String bookId){
-        if(checkBooks(bookId)){
+    public static void checkOutBook(String userId, String bookId) {
+        if (checkBooks(bookId)) {
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String formattedDate = currentDate.format(dateFormatter);
@@ -69,63 +68,64 @@ public class Main {
             transactionQuantity++;
 
             System.out.println("Transaction successful");
-        }
-        else {
+        } else {
             System.out.println("Transaction failed");
-    }
+        }
         int indexToRemove = getBookIndexByBookId(bookId);
         for (int i = indexToRemove; i < bookQuantity - 1; i++) {
-             books[i] = books[i + 1];
-    }
+            books[i] = books[i + 1];
+        }
         books[bookQuantity - 1] = null;
-        bookQuantity --;
+        bookQuantity--;
 
     }
 
-        public static int getBookIndexByBookId(String bookId) {
+    public static int getBookIndexByBookId(String bookId) {
         int indexOfBook = -1;
         for (int i = 0; i < bookQuantity; i++) {
-        if (bookId.equals(books[i][2])) {
-        indexOfBook = i;
-        break;
-        }}
+            if (bookId.equals(books[i][2])) {
+                indexOfBook = i;
+                break;
+            }
+        }
         return indexOfBook;
-}
+    }
 
-    public static boolean checkBooks(String bookId){  
+    public static boolean checkBooks(String bookId) {
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
-                if (books[i][2].equals(bookId)) {
-                    System.out.println("The book is found!");
-                    found = true;
-                    break;}
-        if (!found) {
-            System.out.println("The book is not found.");
+            if (books[i][2].equals(bookId)) {
+                System.out.println("The book is found!");
+                found = true;
+                break;
             }
+            if (!found) {
+                System.out.println("The book is not found.");
+            }
+        }
+        return found;
     }
-    return found;
-}
 
-    public static void signUp(){
-    System.out.println("User Name :");
-    String userName = scanner.nextLine();
+    public static void signUp() {
+        System.out.println("User Name :");
+        String userName = scanner.nextLine();
 
-    System.out.println("User ID :");
-    String userId = scanner.nextLine();
+        System.out.println("User ID :");
+        String userId = scanner.nextLine();
 
-    System.out.println("Email address :");
-    String email = scanner.nextLine();
+        System.out.println("Email address :");
+        String email = scanner.nextLine();
 
-    System.out.println("Password :");
-    String password = scanner.nextLine();
-    
-    users[userQuantity][0] = userName;
-    users[userQuantity][1] = userId;
-    users[userQuantity][2] = email;
-    users[userQuantity][3] = password;
-    userQuantity++;
+        System.out.println("Password :");
+        String password = scanner.nextLine();
 
-    System.out.println("Signup Successful.");
+        users[userQuantity][0] = userName;
+        users[userQuantity][1] = userId;
+        users[userQuantity][2] = email;
+        users[userQuantity][3] = password;
+        userQuantity++;
+
+        System.out.println("Signup Successful.");
     }
 
     public static void searchBook(String query) { // Search with title or Id
@@ -164,7 +164,6 @@ public class Main {
     }
 
 
-
     public static void extendBooksArrayOnAddition(String title, String author, String bookId, String additionalDoc) {
         int temp = -1, i, j;
         if (Index <= bookQuantity) {
@@ -190,8 +189,9 @@ public class Main {
                 System.out.println("Extend Books and Array On Addition transaction failed!");
             }
         }
+    }
 
-    public static void returnbook(String userId, String bookId) {
+    public static void returnBook(String userId, String bookId) {
         int temp = -1, i;
         for (i = 0; i < transactionQuantity; i++) {
             if (transactions[i][0].equals(userId) || transactions[i][1].equals(bookId)) {
@@ -243,3 +243,39 @@ public class Main {
         }
 
     }
+
+    public static void deleteUserInfo(String userId, String bookId) {
+        if (transactionQuantity > 0) {
+            returnBook(userId, bookId);
+            int temp = -1, i, j;
+            for (i = 0; i < userQuantity; i++) {
+                if (users[i][0].equals(userId)) {
+                    temp = i;
+                    userQuantity = userQuantity - 1;
+                    String[][] usersNew = new String[userQuantity][4];
+                    for (j = 0; j < temp; j++) {
+                        usersNew[j][0] = users[j][0];
+                        usersNew[j][1] = users[j][1];
+                        usersNew[j][2] = users[j][2];
+                        usersNew[j][3] = users[j][3];
+                    }
+
+                    for (j = temp; j < userQuantity; j++) {
+                        usersNew[j][0] = users[j + 1][0];
+                        usersNew[j][1] = users[j + 1][1];
+                        usersNew[j][2] = users[j + 1][2];
+                        usersNew[j][3] = users[j + 1][3];
+                    }
+                    users = usersNew;
+                    System.out.println("Truncate User and Array On Deletion transaction successful");
+                }
+            }
+            if (temp == -1) {
+                System.out.println("Truncate User and Array On Deletion transaction failed!");
+            }
+        } else {
+            System.out.println("There is no user that can be erased!");
+        }
+
+    }
+}
