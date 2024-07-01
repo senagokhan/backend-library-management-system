@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -15,7 +16,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        
     }
+
+  
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -102,6 +106,11 @@ public class Main {
             if (!found) {
                 System.out.println("The book is not found.");
             }
+
+            }
+            if (!found) {
+                System.out.println("The book is not found.");
+            }
         }
         return found;
     }
@@ -109,6 +118,7 @@ public class Main {
     public static void signUp() {
         System.out.println("User Name :");
         String userName = scanner.nextLine();
+
 
         System.out.println("User ID :");
         String userId = scanner.nextLine();
@@ -126,6 +136,34 @@ public class Main {
         userQuantity++;
 
         System.out.println("Signup Successful.");
+
+    }
+
+    public static void updateUserInfo(String userName, String userId, String email, String password ){
+        int userIndex = getUserIndexById(userId);
+        if (userIndex >= 0) {
+            users[userIndex][0] = userName;
+            users[userIndex][1] = userId;
+            users[userIndex][2] = email;
+            users[userIndex][3] = password;
+
+            System.out.println("User information has been updated successfully.");}
+        else 
+        {
+            System.out.println("User not found!");
+        }}
+
+
+    public static int getUserIndexById(String userId){
+            int indexOfUser = -1;
+            for (int i = 0; i < userQuantity; i++) {
+            if (userId.equals(users[i][1])) {
+            indexOfUser = i;
+            break;
+            }
+            }
+            return indexOfUser;
+
     }
 
     public static void searchBook(String query) { // Search with title or Id
@@ -191,10 +229,12 @@ public class Main {
         }
     }
 
-    public static void returnBook(String userId, String bookId) {
+
+    public static void returnBook(String bookId) {
+ 
         int temp = -1, i;
         for (i = 0; i < transactionQuantity; i++) {
-            if (transactions[i][0].equals(userId) || transactions[i][1].equals(bookId)) {
+            if (transactions[i][1].equals(bookId)) {
                 transactions[i][3] = "RETURNED";
                 System.out.println("Book return transaction successful");
                 temp = i;
@@ -244,9 +284,10 @@ public class Main {
 
     }
 
+      
     public static void deleteUserInfo(String userId, String bookId) {
         if (transactionQuantity > 0) {
-            returnBook(userId, bookId);
+            returnBook(bookId);
             int temp = -1, i, j;
             for (i = 0; i < userQuantity; i++) {
                 if (users[i][0].equals(userId)) {
@@ -275,6 +316,67 @@ public class Main {
             }
         } else {
             System.out.println("There is no user that can be erased!");
+        }
+
+    }
+}
+
+
+    public static void generateBookRecommendations(String userId) {
+
+        int i, j, k, x, temp = 0;
+        String userbookId = null;
+        String userbookAuthor = null;
+
+        for (i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(userId)) {
+                userbookId = transactions[i][1];
+            }
+        }
+
+        if (userbookId == null) {
+            Random veri = new Random();
+            x = veri.nextInt(bookQuantity - 1);
+            System.out.println("Name of recommended book :" + books[x][0]);
+            System.out.println("Author of recommended book :" + books[x][1]);
+
+        } else {
+            for (j = 0; j < bookQuantity; j++) {
+                if (books[j][2].equals(userbookId)) {
+                    userbookAuthor = books[j][1];
+                }
+            }
+            for (k = 0; k < bookQuantity; k++) {
+                if (books[k][1].equals(userbookAuthor) && books[k][2] != (userbookId)) {
+                    System.out.println("Name of recommended book :" + books[k][0]);
+                    System.out.println("Author of recommended book :" + books[k][1]);
+                    temp=temp+1;
+                }
+
+            }
+            if (temp == 0) {
+                Random veri = new Random();
+                x = veri.nextInt(bookQuantity - 1);
+                System.out.println("Name of recommended book :" + books[x][0]);
+                System.out.println("Author of recommended book :" + books[x][1]);
+            }
+
+        }
+
+
+    }
+
+
+ public static void viewBooksDetails(String bookId) {
+
+        int i;
+        for (i = 0; i < bookQuantity; i++) {
+            if (books[i][2].equals(bookId)) {
+                System.out.println("Name of the book :" + books[i][0]);
+                System.out.println("Author of the book :" + books[i][1]);
+                System.out.println("Additional information of the book :" + books[i][3]);
+
+            }
         }
 
     }
