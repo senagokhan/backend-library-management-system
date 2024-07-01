@@ -5,21 +5,34 @@ import java.util.Scanner;
 
 
 public class Main {
-    static int Index = 5;
+    static int Index = 50;
     static String[][] books = new String[Index][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4]; // id , name , email, password
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
+    static String[][] requestBooks = new String[Index][4];
     static int bookQuantity = 0;
     static int transactionQuantity = 0;
     static int userQuantity = 0;
+    static int requestBookQuantity = 0;
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
-        
+        requestBook("kediler", "lokum", "12", "miyaav");
+
+        requestBook("kediler2", "lokum", "13", "miyaav");
+
+        for(int i=0; i<requestBookQuantity; i++){
+            System.out.println(requestBooks[i][0]);
+            System.out.println(requestBooks[i][1]);
+            System.out.println(requestBooks[i][2]);
+            System.out.println(requestBooks[i][3]);
+        }
+        requestBook("kediler3", "lokum", "14", "miyaav");
+
+
     }
 
-  
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
@@ -107,13 +120,10 @@ public class Main {
                 System.out.println("The book is not found.");
             }
 
-            }
-            if (!found) {
-                System.out.println("The book is not found.");
-            }
         }
         return found;
     }
+
 
     public static void signUp() {
         System.out.println("User Name :");
@@ -139,13 +149,13 @@ public class Main {
 
     }
 
-    public static int login(){
+    public static int login() {
         System.out.println("E-mail address:");
         String email = scanner.nextLine();
         System.out.println("Password:");
         String password = scanner.nextLine();
         int index = invalidLoginCheck(email, password);
-        if (index!=-1){
+        if (index != -1) {
             System.out.println("Login successful!");
             return index;
         }
@@ -153,7 +163,7 @@ public class Main {
     }
 
 
-public static int invalidLoginCheck(String email, String password) {
+    public static int invalidLoginCheck(String email, String password) {
         for (int i = 0; i < userQuantity; i++) {
             if (users[i][2].equals(email) && users[i][3].equals(password)) {
                 System.out.println("Login successful!");
@@ -164,7 +174,7 @@ public static int invalidLoginCheck(String email, String password) {
         return -1;
     }
 
-    public static void updateUserInfo(String userName, String userId, String email, String password ){
+    public static void updateUserInfo(String userName, String userId, String email, String password) {
         int userIndex = getUserIndexById(userId);
         if (userIndex >= 0) {
             users[userIndex][0] = userName;
@@ -172,22 +182,22 @@ public static int invalidLoginCheck(String email, String password) {
             users[userIndex][2] = email;
             users[userIndex][3] = password;
 
-            System.out.println("User information has been updated successfully.");}
-        else 
-        {
+            System.out.println("User information has been updated successfully.");
+        } else {
             System.out.println("User not found!");
-        }}
+        }
+    }
 
 
-    public static int getUserIndexById(String userId){
-            int indexOfUser = -1;
-            for (int i = 0; i < userQuantity; i++) {
+    public static int getUserIndexById(String userId) {
+        int indexOfUser = -1;
+        for (int i = 0; i < userQuantity; i++) {
             if (userId.equals(users[i][1])) {
-            indexOfUser = i;
-            break;
+                indexOfUser = i;
+                break;
             }
-            }
-            return indexOfUser;
+        }
+        return indexOfUser;
 
     }
 
@@ -256,7 +266,7 @@ public static int invalidLoginCheck(String email, String password) {
 
 
     public static void returnBook(String bookId) {
- 
+
         int temp = -1, i;
         for (i = 0; i < transactionQuantity; i++) {
             if (transactions[i][1].equals(bookId)) {
@@ -309,7 +319,7 @@ public static int invalidLoginCheck(String email, String password) {
 
     }
 
-      
+
     public static void deleteUserInfo(String userId, String bookId) {
         if (transactionQuantity > 0) {
             returnBook(bookId);
@@ -344,7 +354,6 @@ public static int invalidLoginCheck(String email, String password) {
         }
 
     }
-}
 
 
     public static void generateBookRecommendations(String userId) {
@@ -375,7 +384,7 @@ public static int invalidLoginCheck(String email, String password) {
                 if (books[k][1].equals(userbookAuthor) && books[k][2] != (userbookId)) {
                     System.out.println("Name of recommended book :" + books[k][0]);
                     System.out.println("Author of recommended book :" + books[k][1]);
-                    temp=temp+1;
+                    temp = temp + 1;
                 }
 
             }
@@ -392,7 +401,7 @@ public static int invalidLoginCheck(String email, String password) {
     }
 
 
- public static void viewBooksDetails(String bookId) {
+    public static void viewBooksDetails(String bookId) {
 
         int i;
         for (i = 0; i < bookQuantity; i++) {
@@ -403,6 +412,25 @@ public static int invalidLoginCheck(String email, String password) {
 
             }
         }
+
+    }
+
+
+    public static void requestBook(String title, String author, String bookId, String additionalDoc) {
+        if (requestBookQuantity < Index) {
+            requestBooks[requestBookQuantity][0] = title;
+            requestBooks[requestBookQuantity][1] = author;
+            requestBooks[requestBookQuantity][2] = bookId;
+            requestBooks[requestBookQuantity][3] = additionalDoc;
+            requestBookQuantity++;
+
+            System.out.println("Book request added successfully");
+
+        } else {
+            System.out.println("Book request added failed!\nThere is no capacity for request.");
+
+        }
+
 
     }
 }
