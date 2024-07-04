@@ -252,7 +252,7 @@ public class Main {
                 booksNew[bookQuantity - 1][3] = additionalDoc;
 
                 books = booksNew;
-                System.out.print("Extend Books Array OnA ddition");
+                System.out.print("Extend Books Array On Addition");
                 succesTransaction();
             }
             if (temp == -1) {
