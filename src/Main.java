@@ -223,6 +223,34 @@ public class Main {
     }
 
 
+    public static boolean checkBookReturnDeadline(String userId) {
+        int transactionIndex = getTransactionIndexByUserId(userId);
+        if (transactionIndex >= 0) {
+            String borrowDateStr = transactions[transactionIndex][2];
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate borrowDate = LocalDate.parse(borrowDateStr, dateFormatter);
+    
+            LocalDate deadlineDate = borrowDate.plusDays(15);
+            LocalDate currentDate = LocalDate.now();
+    
+            if (currentDate.isAfter(deadlineDate)) {
+                System.out.println("The return deadline for this book has passed. You cannot borrow book.");
+                return false;
+            }
+        } else {
+            System.out.println("Transaction not found!");
+        }
+        return true;
+    }
+    
+    public static int getTransactionIndexByUserId(String userId) {
+        for (int i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(userId)) {
+                return i;
+            }}
+        return -1;
+    }
+
     public static void extendBooksArrayOnAddition(String title, String author, String bookId, String additionalDoc) {
         int temp = -1, i, j;
         if (Index <= bookQuantity) {
