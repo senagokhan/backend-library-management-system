@@ -17,7 +17,7 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
+        
     }
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
@@ -468,9 +468,32 @@ public class Main {
         }
     }
 
-    public static void succesTransaction() {
-        System.out.println(" Transaction Successfully: " );
+      
+    public static int isAvailable(String bookId) {
+        int temp = -1;
+        for (int i = 0; i < books.length; i++) {
+            if (bookId.equals(books[i][2]) && bookQuantity > 0) {
+                temp = i;
+            }
+        }
+        return temp;
     }
 
 
+    public static void reserveBook(String bookId) {
+
+        int response = isAvailable(bookId);
+        if (response != -1) {
+            System.out.println("Book is Available.Book reservation completed successfully.");
+        } else {
+            System.out.println("This book is not available in the library.");
+        }
+
+
+    }
+  
+  public static void succesTransaction() {
+        System.out.println(" Transaction Successfully: " );
+  }
+  
 }
