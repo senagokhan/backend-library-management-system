@@ -20,6 +20,160 @@ public class Main {
 
     }
 
+    public static void userMenu() {
+
+
+        String title, author, bookId, additionalDoc;
+        String userId, name, email, password;
+        String bookIdOrTitle;
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("--WELCOME TO USER MENU--");
+
+        while (true) {
+
+            String choice = scan.nextLine();
+
+            System.out.println("1. Add Book");
+            System.out.println("2. Delete Book");
+            System.out.println("3. Update Book");
+            System.out.println("4. View Available Book");
+            System.out.println("5. View Book Details");
+            System.out.println("6. Search Book");
+            System.out.println("7. Count Total Books");
+            System.out.println("8. Return Book");
+            System.out.println("9. Check Book Return Deadline");
+            System.out.println("10. Generate Book Recommendations");
+            System.out.println("11. Check Out Book");
+            System.out.println("12. Reserve Book");
+            System.out.println("13. Update User Info");
+            System.out.println("14. Delete User Information");
+            System.out.println("15. Check User Eligibility For Checkout");
+            System.out.println("16. Generate Reports");
+            System.out.println("17. Exiting User Menu");
+
+            switch (choice) {
+                case "1":
+                    System.out.println("Please enter the book title:");
+                    title = scan.nextLine();
+                    System.out.println("Please enter the book author:");
+                    author = scan.nextLine();
+                    System.out.println("Please enter the book Id:");
+                    bookId = scan.nextLine();
+                    System.out.println("Please enter the book aditional information:");
+                    additionalDoc = scan.nextLine();
+                    addBook("title", "author", "bookId", "additionalDoc");
+                    break;
+
+                case "2":
+                    System.out.println("Please enter the Id number of the book you want to delete:");
+                    bookId = scan.nextLine();
+                    deleteBook("bookId");
+                    break;
+
+                case "3":
+                    System.out.println("Please enter the book title for update:");
+                    title = scan.nextLine();
+                    System.out.println("Please enter the book author for update:");
+                    author = scan.nextLine();
+                    System.out.println("Please enter the book Id for update:");
+                    bookId = scan.nextLine();
+                    System.out.println("Please enter the book aditional information for update:");
+                    additionalDoc = scan.nextLine();
+                    updateBook("title", "author", "bookId", "additionalDoc");
+                    break;
+
+                case "4":
+                    viewAvailableBooks();
+                    break;
+
+                case "5":
+                    System.out.println("Please enter the book Id for view details:");
+                    bookId = scan.nextLine();
+                    viewBooksDetails("bookId");
+                    break;
+
+                case "6":
+                    System.out.println("Please enter the book Id or book title for search:");
+                    bookIdOrTitle = scan.nextLine();
+                    searchBook("bookIdOrTitle");
+                    break;
+
+                case "7":
+                    countTotalBooks();
+                    break;
+
+                case "8":
+                    System.out.println("Please enter the book Id  for return:");
+                    bookId = scan.nextLine();
+                    returnBook("bookId");
+                    break;
+
+                case "9":
+                System.out.println("Please enter the user Id  for check book return deadline:");
+                userId = scan.nextLine();
+                checkBookReturnDeadline(userId);
+                    break;
+
+                case "10":
+                    System.out.println("Please enter the user Id  for search recommendations:");
+                    userId = scan.nextLine();
+                    generateBookRecommendations("userId");
+                    break;
+
+                case "11":
+                    System.out.println("Please enter the user Id  for check out book:");
+                    userId = scan.nextLine();
+                    System.out.println("Please enter the book Id  for check out book:");
+                    bookId = scan.nextLine();
+                    checkOutBook("userId", "bookId");
+                    break;
+
+                case "12":
+                    System.out.println("Please enter the book Id for reserve book:");
+                    bookId = scan.nextLine();
+                    reserveBook(bookId);
+                    break;
+
+                case "13":
+                    System.out.println("Please enter the user name for update:");
+                    title = scan.nextLine();
+                    System.out.println("Please enter the user Id for update:");
+                    author = scan.nextLine();
+                    System.out.println("Please enter the user emal for update:");
+                    bookId = scan.nextLine();
+                    System.out.println("Please enter the user password for update:");
+                    additionalDoc = scan.nextLine();
+                    updateUserInfo("name", "userId", "email", "password");
+                    break;
+
+                case "14":
+                    System.out.println("Please enter the user Id for delete usr informaition:");
+                    userId = scan.nextLine();
+                    System.out.println("Please enter the book Id  for delete user information:");
+                    bookId = scan.nextLine();
+                    deleteUserInfo("userId", "bookId");
+                    break;
+
+                case "15":
+                   checkUserEligibilityForCheckout();
+                    break;
+
+                case "16":
+                    generateReports();
+                    break;
+
+                case "17":
+                    System.out.println("Exiting user menu:");
+                    System.exit(0);
+
+                
+            }
+        
+        }
+    }
+
+    
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
         if (bookQuantity < Index) {
             books[bookQuantity][0] = title;
