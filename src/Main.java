@@ -17,7 +17,7 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        
+
     }
 
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
@@ -28,7 +28,7 @@ public class Main {
             books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
 
-            System.out.println(bookQuantity + "." + " Book added successfully");
+            succesTransaction("Add Book");
 
         } else {
             System.out.println("We cannot add books to shelves that are already full!");
@@ -70,7 +70,7 @@ public class Main {
             transactions[transactionQuantity][2] = formattedDate;
             transactionQuantity++;
 
-            System.out.println("Transaction successful");
+            succesTransaction("Check Out Book");
         } else {
             System.out.println("Transaction failed");
         }
@@ -98,7 +98,7 @@ public class Main {
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
             if (books[i][2].equals(bookId)) {
-                System.out.println("The book is found!");
+                succesTransaction("Check Books");
                 found = true;
                 break;
             }
@@ -131,7 +131,7 @@ public class Main {
         users[userQuantity][3] = password;
         userQuantity++;
 
-        System.out.println("Signup Successful.");
+        succesTransaction("Sign Up");
 
     }
 
@@ -142,7 +142,7 @@ public class Main {
         String password = scanner.nextLine();
         int index = invalidLoginCheck(email, password);
         if (index != -1) {
-            System.out.println("Login successful!");
+            succesTransaction("Login");
             return index;
         }
         return -1;
@@ -152,7 +152,7 @@ public class Main {
     public static int invalidLoginCheck(String email, String password) {
         for (int i = 0; i < userQuantity; i++) {
             if (users[i][2].equals(email) && users[i][3].equals(password)) {
-                System.out.println("Login successful!");
+                succesTransaction("Invalid Login Check");
                 return i;
             }
         }
@@ -168,7 +168,7 @@ public class Main {
             users[userIndex][2] = email;
             users[userIndex][3] = password;
 
-            System.out.println("User information has been updated successfully.");
+            succesTransaction("Update User Information");
         } else {
             System.out.println("User not found!");
         }
@@ -191,7 +191,7 @@ public class Main {
         int temp = -1;
         for (int i = 0; i < bookQuantity; i++) {
             if (books[i][0].equals(query) || books[i][2].equals(query)) {
-                System.out.println("The book was found :");
+                succesTransaction("Search Book");
                 System.out.println("--Book Information--");
                 System.out.println("Book title : " + books[i][0]);
                 System.out.println("Book Author : " + books[i][1]);
@@ -213,7 +213,8 @@ public class Main {
                 books[i][1] = author;
                 books[i][2] = bookId;
                 books[i][3] = additionalDoc;
-                System.out.println("Book update transaction successful");
+
+                succesTransaction("Update Book");
                 temp = i;
             }
         }
@@ -270,7 +271,7 @@ public class Main {
                 booksNew[bookQuantity - 1][3] = additionalDoc;
 
                 books = booksNew;
-                System.out.println("Extend Books and Array On Addition transaction successful");
+                succesTransaction("Extend Books Array On Addition");
             }
             if (temp == -1) {
                 System.out.println("Extend Books and Array On Addition transaction failed!");
@@ -285,7 +286,7 @@ public class Main {
         for (i = 0; i < transactionQuantity; i++) {
             if (transactions[i][1].equals(bookId)) {
                 transactions[i][3] = "RETURNED";
-                System.out.println("Book return transaction successful");
+                succesTransaction("Return Book");
                 temp = i;
             }
         }
@@ -324,7 +325,7 @@ public class Main {
                     booksNew[j][3] = books[j + 1][3];
                 }
                 books = booksNew;
-                System.out.println("Truncate Books and Array On Deletion transaction successful");
+                succesTransaction("Truncate Books Array On Deletion");
             }
         }
         if (temp == -1) {
@@ -357,7 +358,7 @@ public class Main {
                         usersNew[j][3] = users[j + 1][3];
                     }
                     users = usersNew;
-                    System.out.println("Truncate User and Array On Deletion transaction successful");
+                    succesTransaction("Delete User Info");
                 }
             }
             if (temp == -1) {
@@ -438,7 +439,7 @@ public class Main {
             requestBooks[requestBookQuantity][3] = additionalDoc;
             requestBookQuantity++;
 
-            System.out.println("Book request added successfully");
+            succesTransaction("Request Book");
 
         } else {
             System.out.println("Book request added failed!\nThere is no capacity for request.");
@@ -480,6 +481,7 @@ public class Main {
         }
     }
 
+
     public static int isAvailable(String bookId) {
         int temp = -1;
         for (int i = 0; i < books.length; i++) {
@@ -495,11 +497,16 @@ public class Main {
 
         int response = isAvailable(bookId);
         if (response != -1) {
-            System.out.println("Book is Available.Book reservation completed successfully.");
+            succesTransaction("Reserve Book");
         } else {
             System.out.println("This book is not available in the library.");
         }
 
 
     }
+
+    public static void succesTransaction(String temp) {
+        System.out.println(temp + " Transaction Successfully: ");
+    }
+
 }
