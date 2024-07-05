@@ -230,10 +230,10 @@ public class Main {
             String borrowDateStr = transactions[transactionIndex][2];
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate borrowDate = LocalDate.parse(borrowDateStr, dateFormatter);
-    
+
             LocalDate deadlineDate = borrowDate.plusDays(15);
             LocalDate currentDate = LocalDate.now();
-    
+
             if (currentDate.isAfter(deadlineDate)) {
                 System.out.println("The return deadline for this book has passed. You cannot borrow book.");
                 return false;
@@ -243,12 +243,13 @@ public class Main {
         }
         return true;
     }
-    
+
     public static int getTransactionIndexByUserId(String userId) {
         for (int i = 0; i < transactionQuantity; i++) {
             if (transactions[i][0].equals(userId)) {
                 return i;
-            }}
+            }
+        }
         return -1;
     }
 
@@ -268,28 +269,23 @@ public class Main {
 
     public static void extendBooksArrayOnAddition(String title, String author, String bookId, String additionalDoc) {
         int temp = -1, i, j;
+        Scanner scan = new Scanner(System.in);
         if (Index <= bookQuantity) {
+            temp = Index;
             Index = Index + 1;
-            bookQuantity = bookQuantity + 1;
-            String[][] booksNew = new String[bookQuantity][4];
-            for (i = 0; i < bookQuantity; i++) {
-                for (j = 0; j < bookQuantity - 1; j++) {
-                    booksNew[j][0] = books[j][0];
-                    booksNew[j][1] = books[j][1];
-                    booksNew[j][2] = books[j][2];
-                    booksNew[j][3] = books[j][3];
-                }
-                booksNew[bookQuantity - 1][0] = title;
-                booksNew[bookQuantity - 1][1] = author;
-                booksNew[bookQuantity - 1][2] = bookId;
-                booksNew[bookQuantity - 1][3] = additionalDoc;
-
-                books = booksNew;
-                succesTransaction("Extend Books Array On Addition");
-            }
-            if (temp == -1) {
-                System.out.println("Extend Books and Array On Addition transaction failed!");
-            }
+            System.out.println("Enter the title of the book you want to add:");
+            title = scan.nextLine();
+            System.out.println("Enter the author of the book you want to add:");
+            title = scan.nextLine();
+            System.out.println("Enter the bookId of the book you want to add:");
+            title = scan.nextLine();
+            System.out.println("Enter the additional information of the book you want to add:");
+            title = scan.nextLine();
+            updateArrayAddition(books, title, author, bookId, additionalDoc);
+            System.out.println("Extend Books and Array On Addition transaction successful");
+        }
+        if (temp == -1) {
+            System.out.println("Extend Books and Array On Addition transaction failed!");
         }
     }
 
@@ -324,21 +320,7 @@ public class Main {
             if (books[i][2].equals(bookId)) {
                 temp = i;
                 bookQuantity = bookQuantity - 1;
-                String[][] booksNew = new String[bookQuantity][4];
-                for (j = 0; j < temp; j++) {
-                    booksNew[j][0] = books[j][0];
-                    booksNew[j][1] = books[j][1];
-                    booksNew[j][2] = books[j][2];
-                    booksNew[j][3] = books[j][3];
-                }
-
-                for (j = temp; j < bookQuantity; j++) {
-                    booksNew[j][0] = books[j + 1][0];
-                    booksNew[j][1] = books[j + 1][1];
-                    booksNew[j][2] = books[j + 1][2];
-                    booksNew[j][3] = books[j + 1][3];
-                }
-                books = booksNew;
+                updateArrayDeletion(books, temp);
                 succesTransaction("Truncate Books Array On Deletion");
             }
         }
@@ -357,22 +339,9 @@ public class Main {
                 if (users[i][0].equals(userId)) {
                     temp = i;
                     userQuantity = userQuantity - 1;
-                    String[][] usersNew = new String[userQuantity][4];
-                    for (j = 0; j < temp; j++) {
-                        usersNew[j][0] = users[j][0];
-                        usersNew[j][1] = users[j][1];
-                        usersNew[j][2] = users[j][2];
-                        usersNew[j][3] = users[j][3];
-                    }
+                    truncateBooksArrayOnDeletion("bookId");
 
-                    for (j = temp; j < userQuantity; j++) {
-                        usersNew[j][0] = users[j + 1][0];
-                        usersNew[j][1] = users[j + 1][1];
-                        usersNew[j][2] = users[j + 1][2];
-                        usersNew[j][3] = users[j + 1][3];
-                    }
-                    users = usersNew;
-                    succesTransaction("Delete User Info");
+                    succesTransaction("User Info Deletion");
                 }
             }
             if (temp == -1) {
@@ -517,6 +486,44 @@ public class Main {
         }
 
 
+    }
+
+    public static void updateArrayDeletion(String[][] array, int temp) {
+
+        int i;
+        String[][] arrayNew = new String[(array.length) - 1][4];
+        for (i = 0; i < temp; i++) {
+            arrayNew[i][0] = array[i][0];
+            arrayNew[i][1] = array[i][1];
+            arrayNew[i][2] = array[i][2];
+            arrayNew[i][3] = array[i][3];
+        }
+
+        for (i = temp; i < array.length; i++) {
+            arrayNew[i][0] = array[i + 1][0];
+            arrayNew[i][1] = array[i + 1][1];
+            arrayNew[i][2] = array[i + 1][2];
+            arrayNew[i][3] = array[i + 1][3];
+        }
+        array = arrayNew;
+    }
+
+    public static void updateArrayAddition(String[][] array, String column1, String column2, String column3, String column4) {
+
+        int i;
+        String[][] arrayNew = new String[(array.length) + 1][4];
+        for (i = 0; i < array.length; i++) {
+            arrayNew[i][0] = array[i][0];
+            arrayNew[i][1] = array[i][1];
+            arrayNew[i][2] = array[i][2];
+            arrayNew[i][3] = array[i][3];
+        }
+        arrayNew[array.length - 1][0] = column1;
+        arrayNew[array.length - 1][1] = column2;
+        arrayNew[array.length - 1][2] = column3;
+        arrayNew[array.length - 1][3] = column4;
+
+        array = arrayNew;
     }
 
     public static void succesTransaction(String temp) {
