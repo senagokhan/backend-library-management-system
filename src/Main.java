@@ -7,8 +7,9 @@ import java.util.Scanner;
 
 public class Main {
     static int bookQuantity = 0;
+    static int bookLimit = 50;
     static int Index = bookQuantity;
-    static String[][] books = new String[Index][4]; // title , author , id , additional doc.
+    static String[][] books = new String[bookLimit][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4]; // id , name , email, password
     static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
     static String[][] requestBooks = new String[Index][4];
@@ -178,35 +179,25 @@ public class Main {
 
     // Adds a new book to the books array.
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
-        if (bookQuantity < Index) {
+        if (books.length > bookLimit) { // If the array is full
+            System.out.println("Bookshelf is full! Extending the array...");
+            extendBooksArrayOnAddition(title, author, bookId, additionalDoc);
+
+        } else {
             books[bookQuantity][0] = title;
             books[bookQuantity][1] = author;
             books[bookQuantity][2] = bookId;
             books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
-
             successTransaction("Add Book");
-
-        } else {  // If the array is full
-                System.out.println("Bookshelf is full! Extending the array...");
-                extendBooksArrayOnAddition(title, author, bookId, additionalDoc);
-                bookQuantity++;
         }
     }
 
     // It takes the book information from the user and calls the updateArrayAddition() function to add the new book.
     public static void extendBooksArrayOnAddition(String title, String author, String bookId, String additionalDoc) {
-        int temp = -1;
-        if (Index >= bookQuantity) {
-            temp = Index;
-            Index = Index + 1;
-
-            books = updateArrayAddition(books, title, author, bookId, additionalDoc);
-            System.out.println("Extend Books and Array On Addition transaction successful");
-        }
-        if (temp == -1) {
-            System.out.println("Extend Books and Array On Addition transaction failed!");
-        }
+        books = updateArrayAddition(books, title, author, bookId, additionalDoc);
+        bookQuantity++;
+        System.out.println("Extend Books and Array On Addition transaction successful");
     }
 
     //It expands the array where you store the books and adds the new book.
@@ -237,13 +228,14 @@ public class Main {
             System.out.println("There is no book that can be deleted!");
         }
     }
+
     // The method that finds the book to be deleted from the book list and directs the array to be updated.
     public static void truncateBooksArrayOnDeletion(String bookId) {
         int temp = -1, i;
         for (i = 0; i < bookQuantity; i++) {
             if (books[i][2].equals(bookId)) {
                 temp = i;
-                bookQuantity = bookQuantity - 1;
+                bookQuantity -- ;
                 books = updateArrayDeletion(books, temp);
                 successTransaction("Truncate Books Array On Deletion");
             }
@@ -277,6 +269,7 @@ public class Main {
         return arrayNew;
     }
 
+    // Updates the book details (title, author, book ID, and additional document) if the given book ID exists in the array.
     public static void updateBook(String title, String author, String bookId, String additionalDoc) {
         int temp = -1, i;
         for (i = 0; i < bookQuantity; i++) {
@@ -295,6 +288,7 @@ public class Main {
         }
     }
 
+    // Displays all available books in the system, If no books are available, it notifies the user.
     public static void viewAvailableBooks() {
         if (bookQuantity == 0) {
             System.out.println("There isn't available books!");
@@ -306,6 +300,7 @@ public class Main {
         }
     }
 
+    // Prints the details of a book including title, author, ID, and additional document.
     private static void printBooks(String title, String author, String bookId, String additionalDoc) {
         System.out.println("Book Title: " + title);
         System.out.println("Book Author: " + author);
@@ -313,6 +308,8 @@ public class Main {
         System.out.println("Book Additional Document: " + additionalDoc);
     }
 
+    // Displays detailed information of a specific book based on its ID.
+    // If the book ID matches an existing book, its details are printed.
     public static void viewBooksDetails(String bookId) {
 
         int i;
@@ -327,11 +324,11 @@ public class Main {
 
     }
 
-    // Search with title or id
+    // Searches for a book by title or ID and displays its details if found.
     public static void searchBook(String query) {
         int temp = -1;
         for (int i = 0; i < bookQuantity; i++) {
-            if (books[i][0].equals(query) || books[i][2].equals(query)) {
+            if (books[i][0].equalsIgnoreCase(query) || books[i][2].equalsIgnoreCase(query)) {
                 successTransaction( "Search Book");
                 System.out.println("--Book Information--");
                 System.out.println("Book title : " + books[i][0]);
@@ -342,14 +339,15 @@ public class Main {
             }
         }
         if (temp == -1) {
-            System.out.println("The book is not found : ");
+            System.out.println("The book is not found! ");
         }
     }
-
+    // Prints the total number of books.
     public static void countTotalBooks() {
         System.out.println("Total number of books :" + bookQuantity);
     }
 
+    // Marks a book as "RETURNED" in the transactions array if the given book ID is found.
     public static void returnBook(String bookId) {
         int temp = -1, i;
         for (i = 0; i < transactionQuantity; i++) {
@@ -357,6 +355,7 @@ public class Main {
                 transactions[i][3] = "RETURNED";
                 successTransaction("Return Book");
                 temp = i;
+                break;
             }
         }
         if (temp == -1) {
@@ -364,6 +363,7 @@ public class Main {
         }
     }
 
+    // Checks if the user has exceeded the book return deadline (15 days after borrowing).
     public static boolean checkBookReturnDeadline(String userId) {
         int transactionIndex = getTransactionIndexByUserId(userId);
         if (transactionIndex >= 0) {
@@ -384,6 +384,7 @@ public class Main {
         return true;
     }
 
+    // Retrieves the index of the first transaction made by a given user ID.
     public static int getTransactionIndexByUserId(String userId) {
         for (int i = 0; i < transactionQuantity; i++) {
             if (transactions[i][0].equals(userId)) {
@@ -393,6 +394,7 @@ public class Main {
         return -1;
     }
 
+    // Generates book recommendations for the user based on previously borrowed book's author
     public static void generateBookRecommendations(String userId) {
         int i, j, k, x, temp = 0;
         String userBookId = null;
@@ -431,6 +433,7 @@ public class Main {
         }
     }
 
+    // It allows a specific user (userId) to borrow a specific book (bookId).
     public static void checkOutBook(String userId, String bookId) {
         if (checkBooks(bookId)) {
             LocalDate currentDate = LocalDate.now();
@@ -454,6 +457,7 @@ public class Main {
         bookQuantity--;
     }
 
+    // This method checks if a book with the given `bookId` exists in the `books` array and returns `true` if found, otherwise `false`.
     public static boolean checkBooks(String bookId) {
         boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
@@ -468,6 +472,7 @@ public class Main {
         return found;
     }
 
+    // This method returns the index of the book in the `books` array that matches the given `bookId`, or `-1` if not found.
     public static int getBookIndexByBookId(String bookId) {
         int indexOfBook = -1;
         for (int i = 0; i < bookQuantity; i++) {
@@ -478,6 +483,7 @@ public class Main {
         }
         return indexOfBook;
     }
+
 
     public static void reserveBook(String bookId) {
         int response = isAvailable(bookId);
@@ -661,6 +667,6 @@ public class Main {
 
     public static void successTransaction(String temp) {
 
-        System.out.println(temp + " Transaction Successfully: ");
+        System.out.println(temp + " Transaction Successful! ");
     }
 }
