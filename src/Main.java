@@ -6,22 +6,25 @@ import java.util.Scanner;
 
 
 public class Main {
+    static String loggedInUserId = null;
     static int bookQuantity = 0;
     static int bookLimit = 50;
+    static int userLimit = 50;
     static int transactionLimit = 100;
     static int Index = bookQuantity;
-    static String[][] books = new String[bookLimit][4]; // title , author , id , additional doc.
-    static String[][] users = new String[Index][4]; // id , name , email, password
-    static String[][] transactions = new String[transactionLimit][6]; // userId, bookId, date, status, bookTitle, bookAuthor
-    static String[][] requestBooks = new String[Index][4];
     static int transactionQuantity = 0;
     static int userQuantity = 0;
     static int requestBookQuantity = 0;
+    static String[][] reservedBooks = new String[bookLimit][2]; //bookId, userId
+    static int reservedQuantity = 0;
+    static String[][] books = new String[bookLimit][4]; // title, author, id, additional doc.
+    static String[][] users = new String[userLimit][4]; // id, name, email, password
+    static String[][] transactions = new String[transactionLimit][7]; // userId, bookId, date, status, bookTitle, bookAuthor
+    static String[][] requestBooks = new String[Index][4];
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         userMenu();
-
     }
 
     public static void userMenu() {
@@ -35,30 +38,41 @@ public class Main {
 
         while (true) {
 
-            System.out.println("1. Add Book");
-            System.out.println("2. Delete Book");
-            System.out.println("3. Update Book");
-            System.out.println("4. View Available Book");
-            System.out.println("5. View Book Details");
-            System.out.println("6. Search Book");
-            System.out.println("7. Count Total Books");
-            System.out.println("8. Return Book");
-            System.out.println("9. Check Book Return Deadline");
-            System.out.println("10. Generate Book Recommendations");
-            System.out.println("11. Check Out Book");
-            System.out.println("12. Reserve Book");
-            System.out.println("13. Update User Info");
-            System.out.println("14. Delete User Information");
-            System.out.println("15. Check User Eligibility For Checkout");
-            System.out.println("16. Generate Reports");
-            System.out.println("17. Exiting User Menu");
+            System.out.println("1. Sign up");
+            System.out.println("2. Login");
+            System.out.println("3. Add Book");
+            System.out.println("4. Delete Book");
+            System.out.println("5. Update Book");
+            System.out.println("6. View Available Book");
+            System.out.println("7. View Book Details");
+            System.out.println("8. Search Book");
+            System.out.println("9. Count Total Books");
+            System.out.println("10. Return Book");
+            System.out.println("11. Check Book Return Deadline");
+            System.out.println("12. Generate Book Recommendations");
+            System.out.println("13. Check Out Book");
+            System.out.println("14. Reserve Book");
+            System.out.println("15. Request Book");
+            System.out.println("16. Update User Information");
+            System.out.println("17. Delete User Information");
+            System.out.println("18. Check User Eligibility For Checkout");
+            System.out.println("19. Generate Reports");
+            System.out.println("20. Logout");
+            System.out.println("21. Exiting User Menu");
 
             System.out.print("Enter your choice: ");
             String choice = scan.nextLine();
 
-
             switch (choice) {
                 case "1":
+                    signUp();
+                    break;
+
+                case "2":
+                    login();
+                    break;
+
+                case "3":
                     System.out.println("Please enter the book title:");
                     title = scan.nextLine();
                     System.out.println("Please enter the book author:");
@@ -70,13 +84,13 @@ public class Main {
                     addBook(title, author, bookId, additionalDoc);
                     break;
 
-                case "2":
+                case "4":
                     System.out.println("Please enter the Id number of the book you want to delete:");
                     bookId = scan.nextLine();
                     deleteBook(bookId);
                     break;
 
-                case "3":
+                case "5":
                     System.out.println("Please enter the book title for update:");
                     title = scan.nextLine();
                     System.out.println("Please enter the book author for update:");
@@ -88,97 +102,154 @@ public class Main {
                     updateBook(title, author, bookId, additionalDoc);
                     break;
 
-                case "4":
+                case "6":
                     viewAvailableBooks();
                     break;
 
-                case "5":
+                case "7":
                     System.out.println("Please enter the book Id for view details:");
                     bookId = scan.nextLine();
                     viewBooksDetails(bookId);
                     break;
 
-                case "6":
+                case "8":
                     System.out.println("Please enter the book Id or book title for search:");
                     bookIdOrTitle = scan.nextLine();
                     searchBook(bookIdOrTitle);
                     break;
 
-                case "7":
+                case "9":
                     countTotalBooks();
                     break;
 
-                case "8":
+                case "10":
                     System.out.println("Please enter the book Id  for return:");
                     bookId = scan.nextLine();
                     returnBook(bookId);
                     break;
 
-                case "9":
-                    System.out.println("Please enter the user Id  for check book return deadline:");
-                    userId = scan.nextLine();
-                    checkBookReturnDeadline(userId);
+                case "11":
+                    checkBookReturnDeadline();
                     break;
 
-                case "10":
+                case "12":
                     System.out.println("Please enter the user Id  for search recommendations:");
                     userId = scan.nextLine();
                     generateBookRecommendations(userId);
                     break;
 
-                case "11":
-                    System.out.println("Please enter the user Id  for check out book:");
-                    userId = scan.nextLine();
+                case "13":
                     System.out.println("Please enter the book Id  for check out book:");
                     bookId = scan.nextLine();
-                    checkOutBook(userId, bookId);
+                    checkOutBook(bookId);
                     break;
 
-                case "12":
+                case "14":
+                    System.out.println("Please enter the user Id for reserve book:");
+                    userId = scan.nextLine();
                     System.out.println("Please enter the book Id for reserve book:");
                     bookId = scan.nextLine();
-                    reserveBook(bookId);
+                    reserveBook(userId,bookId);
                     break;
 
-                case "13":
+                case "15":
+                    System.out.println("Please enter the title for request book:");
+                    title = scan.nextLine();
+                    System.out.println("Please enter the author for request book:");
+                    author = scan.nextLine();
+                    System.out.println("Please enter the book Id for request book:");
+                    bookId = scan.nextLine();
+                    System.out.println("Please enter the additional document for request book:");
+                    additionalDoc = scan.nextLine();
+                    requestBook(title,author,bookId,additionalDoc);
+                    break;
+
+                case "16":
                     System.out.println("Please enter the user name for update:");
                     name = scan.nextLine();
-                    System.out.println("Please enter the user Id for update:");
-                    userId = scan.nextLine();
                     System.out.println("Please enter the user email for update:");
                     email = scan.nextLine();
                     System.out.println("Please enter the user password for update:");
                     password = scan.nextLine();
-                    updateUserInfo(name, userId, email, password);
-                    break;
-
-                case "14":
-                    System.out.println("Please enter the user Id for delete usr information:");
-                    userId = scan.nextLine();
-                    System.out.println("Please enter the book Id  for delete user information:");
-                    bookId = scan.nextLine();
-                    deleteUserInfo(userId, bookId);
-                    break;
-
-                case "15":
-                   checkUserEligibilityForCheckout();
-                    break;
-
-                case "16":
-                    generateReports();
+                    updateUserInfo(name, email, password);
                     break;
 
                 case "17":
-                    System.out.println("Exiting user menu:");
+                    deleteUserInfo();
+                    break;
+
+                case "18":
+                   checkUserEligibilityForCheckout();
+                    break;
+
+                case "19":
+                    generateReports();
+                    break;
+
+                case "20":
+                    logout();
+                    break;
+
+                case "21":
+                    System.out.println("Exiting user menu...");
                     System.exit(0);
 
-                
             }
         }
     }
 
+    public static void signUp() {
+        System.out.println("User Name :");
+        String userName = scanner.nextLine();
+
+        System.out.println("User ID :");
+        String userId = scanner.nextLine();
+
+        System.out.println("Email address :");
+        String email = scanner.nextLine();
+
+        System.out.println("Password :");
+        String password = scanner.nextLine();
+
+        users[userQuantity][0] = userName;
+        users[userQuantity][1] = userId;
+        users[userQuantity][2] = email;
+        users[userQuantity][3] = password;
+        userQuantity++;
+
+        successTransaction("Sign Up");
+    }
+
+    public static void login() {
+        System.out.println("E-mail address:");
+        String email = scanner.nextLine();
+        System.out.println("Password:");
+        String password = scanner.nextLine();
+        int index = invalidLoginCheck(email, password);
+        if (index != -1) {
+            loggedInUserId = users[index][0];
+            successTransaction("Login");
+            System.out.println("Login successful! Welcome, " + users[index][2]);
+        } else {
+            System.out.println("Invalid login! Please check your email or password!");
+        }
+    }
+
+    public static int invalidLoginCheck(String email, String password) {
+        for (int i = 0; i < userQuantity; i++) {
+            if (users[i][2].equals(email) && users[i][3].equals(password)) {
+                successTransaction("Invalid Login Check");
+                return i;
+            }
+        }
+        System.out.println("Invalid login! Please check your email or password!");
+        return -1;
+    }
+
     // Adds a new book to the books array.
     public static void addBook(String title, String author, String bookId, String additionalDoc) {
+        if (!isUserLoggedIn()) return;
+
         if (books.length > bookLimit) { // If the array is full
             System.out.println("Bookshelf is full! Extending the array...");
             extendBooksArrayOnAddition(title, author, bookId, additionalDoc);
@@ -222,6 +293,8 @@ public class Main {
 
     //The main method that initiates the book deletion process.
     public static void deleteBook(String bookId) {
+        if (!isUserLoggedIn()) return;
+
         if (bookQuantity > 0) {
             truncateBooksArrayOnDeletion(bookId);
         } else {
@@ -290,6 +363,10 @@ public class Main {
 
     // Displays all available books in the system, If no books are available, it notifies the user.
     public static void viewAvailableBooks() {
+        if (loggedInUserId == null) {
+            System.out.println("You must be logged in to view available books!");
+            return;
+        }
         if (bookQuantity == 0) {
             System.out.println("There isn't available books!");
         } else {
@@ -347,28 +424,46 @@ public class Main {
         System.out.println("Total number of books :" + bookQuantity);
     }
 
-    // Marks a book as "RETURNED" in the transactions array if the given book ID is found.
     public static void returnBook(String bookId) {
+        if (loggedInUserId == null) {
+            System.out.println("You must be logged in to return a book!");
+            return;
+        }
         int temp = -1;
-        String bookTitle = "";
-        String bookAuthor = "";
+        String bookTitle = "", bookAuthor = "", additionalDoc = "";
 
         for (int i = 0; i < transactionQuantity; i++) {
-            if (transactions[i][1].equals(bookId)) {
+            if (transactions[i][1].equals(bookId)&& transactions[i][0].equals(loggedInUserId)) {
                 transactions[i][3] = "RETURNED";
                 successTransaction("Return Book");
                 temp = i;
 
                 bookTitle = transactions[i][4];
                 bookAuthor = transactions[i][5];
+                additionalDoc = transactions[i][6];
 
                 break;
             }
         }
+
         if (temp == -1) {
             System.out.println("Book return transaction failed!");
             return;
         }
+
+        if (transactionQuantity < transactions.length) {
+            transactions[transactionQuantity][0] = loggedInUserId;
+            transactions[transactionQuantity][1] = bookId;
+            transactions[transactionQuantity][2] = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            transactions[transactionQuantity][3] = "RETURNED";
+            transactions[transactionQuantity][4] = bookTitle;
+            transactions[transactionQuantity][5] = bookAuthor;
+            transactions[transactionQuantity][6] = additionalDoc;
+            transactionQuantity++;
+        } else {
+            System.out.println("Transaction log is full. Cannot record return transaction.");
+        }
+
         if (bookQuantity < bookLimit) {
             if (books[bookQuantity] == null) {
                 books[bookQuantity] = new String[4];
@@ -376,16 +471,33 @@ public class Main {
             books[bookQuantity][0] = bookTitle;
             books[bookQuantity][1] = bookAuthor;
             books[bookQuantity][2] = bookId;
-            books[bookQuantity][3] = "Additional Info";
+            books[bookQuantity][3] = additionalDoc;
             bookQuantity++;
         } else {
             System.out.println("Book return failed: Book list is full.");
+            return;
+        }
+
+        for (int i = 0; i < reservedQuantity; i++) {
+            if (reservedBooks[i][0].equals(bookId)) {
+                System.out.println("Book is now available for User ID: " + reservedBooks[i][1]);
+
+                checkOutBook(bookId);
+
+                for (int j = i; j < reservedQuantity - 1; j++) {
+                    reservedBooks[j] = reservedBooks[j + 1];
+                }
+                reservedBooks[reservedQuantity - 1] = null;
+                reservedQuantity--;
+                return;
+            }
         }
     }
 
     // Checks if the user has exceeded the book return deadline (15 days after borrowing).
-    public static boolean checkBookReturnDeadline(String userId) {
-        int transactionIndex = getTransactionIndexByUserId(userId);
+    public static boolean checkBookReturnDeadline() {
+        if (!isUserLoggedIn()) return false;
+        int transactionIndex = getTransactionIndexByUserId(loggedInUserId);
         if (transactionIndex >= 0) {
             String borrowDateStr = transactions[transactionIndex][2];
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -400,6 +512,14 @@ public class Main {
             }
         } else {
             System.out.println("Transaction not found!");
+        }
+        return true;
+    }
+
+    public static boolean isUserLoggedIn() {
+        if (loggedInUserId == null) {
+            System.out.println("You must be logged in to perform this action!");
+            return false;
         }
         return true;
     }
@@ -454,7 +574,12 @@ public class Main {
     }
 
     // It allows a specific user (userId) to borrow a specific book (bookId).
-    public static void checkOutBook(String userId, String bookId) {
+    public static void checkOutBook(String bookId) {
+        if(loggedInUserId == null){
+            System.out.println("You must be logged in to check out a book!");
+            return;
+        }
+
         int indexToRemove = getBookIndexByBookId(bookId);
 
         if (indexToRemove == -1) {
@@ -474,13 +599,15 @@ public class Main {
 
             String bookTitle = books[indexToRemove][0];
             String bookAuthor = books[indexToRemove][1];
+            String additionalDoc = books[indexToRemove][3];
 
-            transactions[transactionQuantity][0] = userId;
+            transactions[transactionQuantity][0] = loggedInUserId;
             transactions[transactionQuantity][1] = bookId;
             transactions[transactionQuantity][2] = formattedDate;
             transactions[transactionQuantity][3] = "BORROWED";
-            transactions[transactionQuantity][4] = bookTitle; // Yeni eklendi
-            transactions[transactionQuantity][5] = bookAuthor; // Yeni eklendi
+            transactions[transactionQuantity][4] = bookTitle;
+            transactions[transactionQuantity][5] = bookAuthor;
+            transactions[transactionQuantity][6]= additionalDoc;
 
             transactionQuantity++;
 
@@ -508,7 +635,6 @@ public class Main {
         return false;
     }
 
-
     // This method returns the index of the book in the `books` array that matches the given `bookId`, or `-1` if not found.
     public static int getBookIndexByBookId(String bookId) {
         for (int i = 0; i < bookQuantity; i++) {
@@ -520,38 +646,69 @@ public class Main {
         return -1;
     }
 
+    public static void reserveBook(String userId, String bookId) {
+        if (loggedInUserId == null) {
+            System.out.println("You must be logged in to reserve a book!");
+            return;
+        }
+        int availableIndex = isAvailable(bookId);
 
-
-    public static void reserveBook(String bookId) {
-        int response = isAvailable(bookId);
-        if (response != -1) {
-            successTransaction( "Reserve Book");
+        if (availableIndex != -1) {
+            System.out.println("Book is available, no need to reserve. You can check it out.");
         } else {
-            System.out.println("This book is not available in the library.");
+
+            if (reservedQuantity < bookLimit) {
+                reservedBooks[reservedQuantity][0] = bookId;
+                reservedBooks[reservedQuantity][1] = loggedInUserId;
+                reservedQuantity++;
+                System.out.println("Book reserved successfully for User ID: " + userId + ". You will be notified when it's available.");
+            } else {
+                System.out.println("Reservation list is full. Cannot reserve this book.");
+            }
+        }
+    }
+
+    public static void requestBook(String title, String author, String bookId, String additionalDoc) {
+        if (!isUserLoggedIn()) return;
+
+        if (requestBookQuantity < requestBooks.length) {
+            requestBooks[requestBookQuantity][0] = title;
+            requestBooks[requestBookQuantity][1] = author;
+            requestBooks[requestBookQuantity][2] = bookId;
+            requestBooks[requestBookQuantity][3] = additionalDoc;
+            requestBookQuantity++;
+
+            successTransaction("Request Book");
+            System.out.println("Your book request has been recorded successfully.");
+        } else {
+            System.out.println("Book request failed!\nThere is no capacity for request.");
         }
     }
 
     public static int isAvailable(String bookId) {
         int temp = -1;
-        for (int i = 0; i < books.length; i++) {
-            if (bookId.equals(books[i][2]) && bookQuantity > 0) {
-                temp = i;
+        for (int i = 0; i < bookQuantity; i++) {
+            if (bookId.equals(books[i][2])) {
+                return i;
             }
         }
         return temp;
     }
 
-    public static void updateUserInfo(String userName, String userId, String email, String password) {
-        int userIndex = getUserIndexById(userId);
-        if (userIndex >= 0) {
-            users[userIndex][0] = userName;
-            users[userIndex][1] = userId;
-            users[userIndex][2] = email;
-            users[userIndex][3] = password;
+    public static void updateUserInfo(String newUserName, String newEmail, String newPassword) {
+        if (!isUserLoggedIn()) return;
 
-            successTransaction("Update User Information");
+        int userIndex = getUserIndexById(loggedInUserId);
+
+        if (userIndex >= 0) {
+            users[userIndex][1] = newUserName;
+            users[userIndex][2] = newEmail;
+            users[userIndex][3] = newPassword;
+
+            successTransaction("User Info Updated");
+            System.out.println("Your information has been successfully updated!");
         } else {
-            System.out.println("User not found!");
+            System.out.println("Error: User not found!");
         }
     }
 
@@ -566,37 +723,38 @@ public class Main {
         return indexOfUser;
     }
 
-    public static void deleteUserInfo(String userId, String bookId) {
-        if (transactionQuantity > 0) {
-            returnBook(bookId);
-            int temp = -1, i;
-            for (i = 0; i < userQuantity; i++) {
-                if (users[i][0].equals(userId)) {
-                    temp = i;
-                    userQuantity = userQuantity - 1;
-                    truncateBooksArrayOnDeletion(bookId);
-
-                    successTransaction("User Info Deletion");
-                }
+    public static void deleteUserInfo() {
+        if (!isUserLoggedIn()) return;
+        for (int i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(loggedInUserId) && transactions[i][3].equals("BORROWED")) {
+                returnBook(transactions[i][1]);
             }
-            if (temp == -1) {
-                System.out.println("Truncate User and Array On Deletion transaction failed!");
-            }
-        } else {
-            System.out.println("There is no user that can be erased!");
         }
+        for (int i = 0; i < userQuantity; i++) {
+            if (users[i][0].equals(loggedInUserId)) {
+                for (int j = i; j < userQuantity - 1; j++) {
+                    users[j] = users[j + 1];
+                }
+                users[userQuantity - 1] = null;
+                userQuantity--;
+                loggedInUserId = null;
+                successTransaction("User Info Deletion");
+                System.out.println("Your account has been successfully deleted.");
+                return;
+            }
+        }
+        System.out.println("User not found! Deletion failed.");
     }
 
-    public static boolean checkUserEligibilityForCheckout() {
-        System.out.println("User Id:");
-        String userId = scanner.nextLine();
+    public static void checkUserEligibilityForCheckout() {
+        if (!isUserLoggedIn()) return;
 
-        if (!checkBookReturnDeadline(userId)) {
-            System.out.println("You have an overdue book. You cannot borrow more books until you return the overdue book.");
-            return false;
+        boolean isEligible = checkBookReturnDeadline();
+
+        if (!isEligible) {
+            System.out.println("You have an overdue book. You cannot borrow more books until you return it.");
         } else {
             System.out.println("You are eligible to borrow books.");
-            return true;
         }
     }
 
@@ -606,8 +764,8 @@ public class Main {
         System.out.println("\n");
         for (i = 0; i < bookQuantity; i++) {
             System.out.println("Book Title:" + books[i][0]);
-            System.out.println("Book Id:" + books[i][1]);
-            System.out.println("Book Author:" + books[i][2]);
+            System.out.println("Book Author:" + books[i][1]);
+            System.out.println("Book Id:" + books[i][2]);
             System.out.println("Book Additional Doc.:" + books[i][3]);
             System.out.println("\n");
         }
@@ -615,89 +773,33 @@ public class Main {
         System.out.println("\nTotal user number:" + userQuantity);
         System.out.println("\n");
         for (j = 0; j < userQuantity; j++) {
-            System.out.println("User Id:" + books[j][0]);
-            System.out.println("User Name:" + books[j][1]);
-            System.out.println("User email:" + books[j][2]);
-            System.out.println("User Password:" + books[j][3]);
+            System.out.println("User Id:" + users[j][0]);
+            System.out.println("User Name:" + users[j][1]);
+            System.out.println("User email:" + users[j][2]);
+            System.out.println("User Password:" + users[j][3]);
             System.out.println("\n");
         }
 
         System.out.println("\nTotal transaction number:" + transactionQuantity);
         System.out.println("\n");
         for (k = 0; k < transactionQuantity; k++) {
-            System.out.println("User Id:" + books[k][0]);
-            System.out.println("Book Id:" + books[k][1]);
-            System.out.println("Date:" + books[k][2]);
-            System.out.println("Status:" + books[k][3]);
+            System.out.println("User Id:" + transactions[k][0]);
+            System.out.println("Book Id:" + transactions[k][1]);
+            System.out.println("Date:" + transactions[k][2]);
+            System.out.println("Status:" + transactions[k][3]);
             System.out.println("\n");
         }
     }
 
-    public static void signUp() {
-        System.out.println("User Name :");
-        String userName = scanner.nextLine();
-
-
-        System.out.println("User ID :");
-        String userId = scanner.nextLine();
-
-        System.out.println("Email address :");
-        String email = scanner.nextLine();
-
-        System.out.println("Password :");
-        String password = scanner.nextLine();
-
-        users[userQuantity][0] = userName;
-        users[userQuantity][1] = userId;
-        users[userQuantity][2] = email;
-        users[userQuantity][3] = password;
-        userQuantity++;
-
-        successTransaction("Sign Up");
-
-    }
-
-    public static int login() {
-        System.out.println("E-mail address:");
-        String email = scanner.nextLine();
-        System.out.println("Password:");
-        String password = scanner.nextLine();
-        int index = invalidLoginCheck(email, password);
-        if (index != -1) {
-            successTransaction("Login");
-            return index;
-        }
-        return -1;
-    }
-
-
-    public static int invalidLoginCheck(String email, String password) {
-        for (int i = 0; i < userQuantity; i++) {
-            if (users[i][2].equals(email) && users[i][3].equals(password)) {
-                successTransaction("Invalid Login Check");
-                return i;
-            }
-        }
-        System.out.println("Invalid login! Please check your email or password!");
-        return -1;
-    }
-
-
-
-    public static void requestBook(String title, String author, String bookId, String additionalDoc) {
-        if (requestBookQuantity < Index) {
-            requestBooks[requestBookQuantity][0] = title;
-            requestBooks[requestBookQuantity][1] = author;
-            requestBooks[requestBookQuantity][2] = bookId;
-            requestBooks[requestBookQuantity][3] = additionalDoc;
-            requestBookQuantity++;
-
-            successTransaction("Request Book");
-
+    public static void logout() {
+        if (loggedInUserId == null) {
+            System.out.println("No user is logged in.");
         } else {
-            System.out.println("Book request added failed!\nThere is no capacity for request.");
+            System.out.println("User " + loggedInUserId + " has logged out.");
+            loggedInUserId = null;
         }
     }
+
     public static void successTransaction(String temp) {
 
         System.out.println(temp + " Transaction Successful! ");
