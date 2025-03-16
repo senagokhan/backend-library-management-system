@@ -8,10 +8,11 @@ import java.util.Scanner;
 public class Main {
     static int bookQuantity = 0;
     static int bookLimit = 50;
+    static int transactionLimit = 100;
     static int Index = bookQuantity;
     static String[][] books = new String[bookLimit][4]; // title , author , id , additional doc.
     static String[][] users = new String[Index][4]; // id , name , email, password
-    static String[][] transactions = new String[Index][4]; // userId , bookId , date , status
+    static String[][] transactions = new String[transactionLimit][6]; // userId, bookId, date, status, bookTitle, bookAuthor
     static String[][] requestBooks = new String[Index][4];
     static int transactionQuantity = 0;
     static int userQuantity = 0;
@@ -173,7 +174,6 @@ public class Main {
 
                 
             }
-        
         }
     }
 
@@ -260,7 +260,7 @@ public class Main {
         }
 
         // Shifts and transfers the books after the deleted book into the new array.
-        for (i = temp; i < array.length; i++) {
+        for (i = temp; i < array.length -1; i++) {
             arrayNew[i][0] = array[i + 1][0];
             arrayNew[i][1] = array[i + 1][1];
             arrayNew[i][2] = array[i + 1][2];
@@ -349,17 +349,37 @@ public class Main {
 
     // Marks a book as "RETURNED" in the transactions array if the given book ID is found.
     public static void returnBook(String bookId) {
-        int temp = -1, i;
-        for (i = 0; i < transactionQuantity; i++) {
+        int temp = -1;
+        String bookTitle = "";
+        String bookAuthor = "";
+
+        for (int i = 0; i < transactionQuantity; i++) {
             if (transactions[i][1].equals(bookId)) {
                 transactions[i][3] = "RETURNED";
                 successTransaction("Return Book");
                 temp = i;
+
+                bookTitle = transactions[i][4];
+                bookAuthor = transactions[i][5];
+
                 break;
             }
         }
         if (temp == -1) {
             System.out.println("Book return transaction failed!");
+            return;
+        }
+        if (bookQuantity < bookLimit) {
+            if (books[bookQuantity] == null) {
+                books[bookQuantity] = new String[4];
+            }
+            books[bookQuantity][0] = bookTitle;
+            books[bookQuantity][1] = bookAuthor;
+            books[bookQuantity][2] = bookId;
+            books[bookQuantity][3] = "Additional Info";
+            bookQuantity++;
+        } else {
+            System.out.println("Book return failed: Book list is full.");
         }
     }
 
@@ -435,54 +455,71 @@ public class Main {
 
     // It allows a specific user (userId) to borrow a specific book (bookId).
     public static void checkOutBook(String userId, String bookId) {
+        int indexToRemove = getBookIndexByBookId(bookId);
+
+        if (indexToRemove == -1) {
+            System.out.println("Transaction failed: Book not found.");
+            return;
+        }
+
         if (checkBooks(bookId)) {
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String formattedDate = currentDate.format(dateFormatter);
 
+            if (transactionQuantity >= transactions.length) {
+                System.out.println("Transaction failed: Transaction list is full.");
+                return;
+            }
+
+            String bookTitle = books[indexToRemove][0];
+            String bookAuthor = books[indexToRemove][1];
+
             transactions[transactionQuantity][0] = userId;
             transactions[transactionQuantity][1] = bookId;
             transactions[transactionQuantity][2] = formattedDate;
+            transactions[transactionQuantity][3] = "BORROWED";
+            transactions[transactionQuantity][4] = bookTitle; // Yeni eklendi
+            transactions[transactionQuantity][5] = bookAuthor; // Yeni eklendi
+
             transactionQuantity++;
 
             successTransaction("Check Out Book");
+
+            for (int i = indexToRemove; i < bookQuantity - 1; i++) {
+                books[i] = books[i + 1];
+            }
+            books[bookQuantity - 1] = null;
+            bookQuantity--;
         } else {
-            System.out.println("Transaction failed");
+            System.out.println("Transaction failed: Book is not available.");
         }
-        int indexToRemove = getBookIndexByBookId(bookId);
-        for (int i = indexToRemove; i < bookQuantity - 1; i++) {
-            books[i] = books[i + 1];
-        }
-        books[bookQuantity - 1] = null;
-        bookQuantity--;
     }
 
     // This method checks if a book with the given `bookId` exists in the `books` array and returns `true` if found, otherwise `false`.
     public static boolean checkBooks(String bookId) {
-        boolean found = false;
         for (int i = 0; i < bookQuantity; i++) {
             if (books[i][2].equals(bookId)) {
                 successTransaction("Check Books");
-                found = true;
-                break;
-            }else {
-                System.out.println("The book is not found.");
+                return true;
             }
         }
-        return found;
+        System.out.println("The book is not found.");
+        return false;
     }
+
 
     // This method returns the index of the book in the `books` array that matches the given `bookId`, or `-1` if not found.
     public static int getBookIndexByBookId(String bookId) {
-        int indexOfBook = -1;
         for (int i = 0; i < bookQuantity; i++) {
             if (bookId.equals(books[i][2])) {
-                indexOfBook = i;
-                break;
+                return i;
             }
         }
-        return indexOfBook;
+        System.out.println("Book index not found for bookId: " + bookId);
+        return -1;
     }
+
 
 
     public static void reserveBook(String bookId) {
@@ -659,12 +696,8 @@ public class Main {
 
         } else {
             System.out.println("Book request added failed!\nThere is no capacity for request.");
-
         }
-
     }
-
-
     public static void successTransaction(String temp) {
 
         System.out.println(temp + " Transaction Successful! ");
